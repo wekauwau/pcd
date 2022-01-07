@@ -3,7 +3,7 @@ import os
 
 
 join = os.path.join
-folder = "roi"
+folder = join("roi", "result")
 start_row = 176
 end_row = 186
 start_col = 171
