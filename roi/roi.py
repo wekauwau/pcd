@@ -45,9 +45,12 @@ dataset_folder = join(folder, "dataset")
 for subfolder in os.listdir(dataset_folder):
     folder_path = join(dataset_folder, subfolder)
 
-    for image in os.listdir(folder_path):
+    for name in os.listdir(folder_path):
+        if name == ".gitkeep":
+            continue
+
         with_roi_out_folder = join(folder, "with-roi", subfolder)
         cropped_roi_out_folder = join(folder, "cropped-roi", subfolder)
 
-        add_roi(folder_path, with_roi_out_folder, image)
-        crop_roi(folder_path, cropped_roi_out_folder, image)
+        add_roi(folder_path, with_roi_out_folder, name)
+        crop_roi(folder_path, cropped_roi_out_folder, name)
