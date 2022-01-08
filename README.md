@@ -11,3 +11,6 @@ Copy and rename **dataset-base** to **dataset**. Add your dataset files there ac
 
 ## rename.py
 Assuming you still have dataset and result files from **roi.py**. Copy and rename **new-dataset-base** to **new-dataset** then run.
+
+## create-train-and-test.py
+Copy and rename **dataset_XvY** according to **destination_folder** (in the file) then run.
