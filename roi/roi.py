@@ -3,7 +3,8 @@ import os
 
 
 join = os.path.join
-folder = join("roi", "result")
+root_folder = join("roi", "result")
+
 start_row = 176
 end_row = 186
 start_col = 171
@@ -41,16 +42,14 @@ def crop_roi(in_path, out_path, filename):
     save_img(img, out_path, filename)
 
 
-dataset_folder = join(folder, "dataset")
-for subfolder in os.listdir(dataset_folder):
-    folder_path = join(dataset_folder, subfolder)
+dataset_path = join(root_folder, "dataset")
+for color in os.listdir(dataset_path):
+    color_folder_path = join(dataset_path, color)
 
-    for name in os.listdir(folder_path):
-        if name == ".gitkeep":
-            continue
+    filenames = [name for name in os.listdir(color_folder_path) if name != ".gitkeep"]
+    for name in filenames:
+        bounding_box_path = join(root_folder, "bb", color)
+        cropped_roi_path = join(root_folder, "roi", color)
 
-        with_roi_out_folder = join(folder, "with-roi", subfolder)
-        cropped_roi_out_folder = join(folder, "cropped-roi", subfolder)
-
-        add_roi(folder_path, with_roi_out_folder, name)
-        crop_roi(folder_path, cropped_roi_out_folder, name)
+        add_roi(color_folder_path, bounding_box_path, name)
+        crop_roi(color_folder_path, cropped_roi_path, name)

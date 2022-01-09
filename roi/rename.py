@@ -1,11 +1,13 @@
 import os
 import shutil
 
+import natsort
+
 
 join = os.path.join
-listdir = os.listdir
 
-folder = join("roi", "result")
+root_folder = join("roi", "result")
+result_path = join(root_folder, "new-dataset")
 color_name = {
     "Kuning": "front_yellow",
     "Kuning-Back": "back_yellow",
@@ -19,33 +21,32 @@ color_name = {
 
 
 def rename(dataset_folder, destination_folder, prefix_name=""):
-    dataset_path = join(folder, dataset_folder)
-    new_dataset_path = join(folder, "new-dataset")
+    dataset_path = join(root_folder, dataset_folder)
     index = 1
 
-    for color in listdir(dataset_path):
+    for color in os.listdir(dataset_path):
         color_folder = join(dataset_path, color)
-        new_color_name = color_name[color]
+        new_color = color_name[color]
 
         placeholder = "{}"
         if bool(prefix_name):
             placeholder += f"_{prefix_name}"
-        placeholder += f"_{new_color_name}.jpg"
+        placeholder += f"_{new_color}.jpg"
 
-        for img in listdir(color_folder):
-            # ignore
-            if img == ".gitkeep":
-                continue
+        filenames = [name for name in os.listdir(color_folder) if name != ".gitkeep"]
+        # sorting like your file browser
+        filenames = natsort.os_sorted(filenames)
 
-            old_file = join(color_folder, img)
+        for name in filenames:
+            old_file = join(color_folder, name)
 
             new_name = placeholder.format(str(index).zfill(2))
-            new_file = join(new_dataset_path, destination_folder, new_name)
+            new_file = join(result_path, destination_folder, new_name)
             shutil.copyfile(old_file, new_file)
 
             index += 1
 
 
-rename("dataset", "asli")
-rename("with-roi", "bb", "bb")
-rename("cropped-roi", "roi", "roi")
+rename("dataset", "original")
+rename("bb", "bb", "bb")
+rename("roi", "roi", "roi")
